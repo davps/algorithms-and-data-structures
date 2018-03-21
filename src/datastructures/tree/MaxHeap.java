@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class MaxHeap<T extends Comparable<T>> {
 	
 	/**
@@ -17,7 +16,33 @@ public class MaxHeap<T extends Comparable<T>> {
 		this.heap.add(null); //because we will not use the index zero for the heap array
 	}
 	
-	private void insert(T t) {
+	/**
+	 * Insert item to the heap.
+	 * @param t Object to be inserted. Implements {@code Comparable}
+	 */
+	public void insert(T t) {
+		//add the data to the tail of the heap (last node of the tree) in order to
+		//always have a balanced tree
+		this.heap.add(t);
+		
+		
+		//now I need to bubble up the inserted item
+		this.bubbleUp(last());
+		
+	}
+
+	/**
+	 * Get the index of the last node of the heap
+	 * @return The index of the node
+	 */
+	private int last() {
+		int N = this.heap.size() - 1;
+		return N;
+	}
+
+
+	private void bubbleUp(int n) {
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -35,15 +60,20 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 	
 	public static void main(String[] args) {
-		
+				
 		List<Integer> mockHeadA = new ArrayList<Integer>();
 		MaxHeap<Integer> h = new MaxHeap<Integer>();
+		AssertEqual(h.last(), 0, "size of the heap");
 		h.setHeapForTest(mockHeadA);
+		AssertEqual(h.last(), 0, "size of the heap");
 		h.insert(10);
 		AssertTrue(mockHeadA.get(0) == null, "First item of arraylist should be null because we start from index 1");
 		AssertEqual(mockHeadA.get(1), 10, "Insert to root, no bubble up");
+		AssertEqual(h.last(), 1, "size of the heap");
+				
 		h.insert(20);
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 20, 10}), "Insert and one bubble up");
+		AssertEqual(h.last(), 2, "size of the heap");
 		
 		h.insert(50);
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 50, 10, 20}), "bubble up 50");
@@ -102,7 +132,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 
 	private static void printError(Object a, Object b, String msg) {
-		System.out.println("Fail: " + msg + " Expected " + a + " but got " + b);		
+		System.err.println("Fail: " + msg + " Expected " + a + " but got " + b);		
 	}
 
 }
