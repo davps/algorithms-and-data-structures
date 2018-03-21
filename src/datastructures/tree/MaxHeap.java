@@ -47,9 +47,8 @@ public class MaxHeap<T extends Comparable<T>> {
 		T node = this.heap.get(i);
 		if(node.compareTo(parentNode) > 0) {
 			swap(parent, i);
+			bubbleUp(parent);
 		}
-		
-		throw new Exception("NOT READY");
 	}
 
 	/**
