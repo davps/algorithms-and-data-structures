@@ -59,7 +59,10 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @throws Exception 
 	 */
 	private void swap(int a, int b) throws Exception {
-		throw new Exception("NOT READY");
+		if(a < 1 || b < 1) throw new Exception("Index out of boundary for swap("+a+","+b+")");
+		T temp = this.heap.get(a);
+		heap.set(a, heap.get(b));
+		heap.set(b, temp);
 	}
 
 	/**
@@ -172,8 +175,22 @@ public class MaxHeap<T extends Comparable<T>> {
 			AssertSuccess("Something was wrong getting a parent");
 		}
 
-		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5, 12}), 
-				"insert and dont bubble up");
+		List<String> mockHeadB = Arrays.asList(new String[] {null, "a", "b", "c"});
+		MaxHeap<String> x = new MaxHeap<String>();
+		x.setHeapForTest(mockHeadB);
+		try {
+			x.swap(1, 2);
+			AssertTrue(mockHeadB.get(1).equals("b"), "swap a[1] with a[2]");
+			AssertTrue(mockHeadB.get(2).equals("a"), "swap a[1] with a[2]");
+		} catch (Exception e) {
+			AssertError("swap error " +e.getMessage());
+		}
+		try {
+			x.swap(-1, 0);
+			AssertError("swap should trigger but didn't");
+		} catch (Exception e) {
+			AssertSuccess("swap exception triggered correctly " +e.getMessage());
+		}
 
 		
 	}
