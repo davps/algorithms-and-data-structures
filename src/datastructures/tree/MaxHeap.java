@@ -4,6 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A heap is a complete binary tree. The heap have this property: 
+ * for each node u, the priority
+ * of the content at u is at least as high as for all's u childrens.
+ * <p>
+ * A good summary can be found.
+ * <a href="http://www-bcf.usc.edu/~dkempe/CS104/10-24.pdf"> here </a>
+ * <p>
+ * For an interactive visualization visit
+ * <a href="https://visualgo.net/en/heap">Visualgo</a>
+ * @author david
+ *
+ * @param <T>
+ */
 public class MaxHeap<T extends Comparable<T>> {
 	
 	/**
@@ -13,29 +27,37 @@ public class MaxHeap<T extends Comparable<T>> {
 	
 	public MaxHeap() {
 		this.heap = new ArrayList<>();
-		this.heap.add(null); //because we will not use the index zero for the heap array
+
+		//null because we will not use the index zero 
+		//for the heap array to make the math simpler
+		this.heap.add(null); 
 	}
-	
+		
 	/**
-	 * Insert item to the heap.
+	 * Insert item to tail of the the heap array.
+	 * Runtime: O(1)
 	 * @param t Object to be inserted. Implements {@code Comparable}
+	 * @throws Exception 
 	 */
-	public void insert(T t) {
+	public void insert(T t) throws Exception {
 		//add the data to the tail of the heap (last node of the tree) in order to
-		//always have a balanced tree
+		//always have a complete binary tree so the heap property is always maintained
 		this.heap.add(t);
-		
-		
-		//now I need to bubble up the inserted item
+				
+		//now I need to bubble up the inserted item to fix the heap property
 		try {
 			this.bubbleUp(last());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new Exception("Insert error " + e.getMessage());
 		}
-		
+				
 	}
 	
+	/**
+	 * Bubble up a node.
+	 * @param i index of the node
+	 * @throws Exception
+	 */
 	private void bubbleUp(int i) throws Exception{
 		if(i < 1) throw new Exception("Method input error. Index should be major than 1.");
 		if(i > last()) throw new Exception("Method input error. Index out of bondaries.");
@@ -108,6 +130,10 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 	}
 	
+	/**
+	 * I implemented the test cases on this main function
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 				
@@ -130,7 +156,11 @@ public class MaxHeap<T extends Comparable<T>> {
 		h.setHeapForTest(mockHeadA);		
 		AssertEqual(h.last(), 0, "size of the heap");
 		
-		h.insert(10);
+		try {
+			h.insert(10);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertTrue(mockHeadA.get(0) == null, "First item of arraylist should be null because we start from index 1");
 		AssertEqual(mockHeadA.get(1), 10, "Insert to root, no bubble up");
 		AssertEqual(h.last(), 1, "size of the heap");
@@ -141,22 +171,42 @@ public class MaxHeap<T extends Comparable<T>> {
 			AssertTrue(false, e.getMessage());
 		}
 				
-		h.insert(20);
+		try {
+			h.insert(20);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 20, 10}), "Insert and one bubble up");
 		AssertEqual(h.last(), 2, "size of the heap");
 		
-		h.insert(50);
+		try {
+			h.insert(50);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 50, 10, 20}), "Insert and bubble up 50");
 		
-		h.insert(70);
+		try {
+			h.insert(70);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10}), 
 				"insert and bubble up 70");
 		
-		h.insert(5);
+		try {
+			h.insert(5);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5}), 
 				"insert and dont bubble up");
 		
-		h.insert(12);
+		try {
+			h.insert(12);
+		} catch (Exception e1) {
+			AssertError(e1.getMessage());
+		}
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5, 12}), 
 				"insert and dont bubble up");
 		
