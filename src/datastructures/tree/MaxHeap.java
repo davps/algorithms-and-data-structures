@@ -27,8 +27,60 @@ public class MaxHeap<T extends Comparable<T>> {
 		
 		
 		//now I need to bubble up the inserted item
-		this.bubbleUp(last());
+		try {
+			this.bubbleUp(last());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+	}
+	
+	private void bubbleUp(int i) throws Exception{
+		if(i < 1) throw new Exception("Method input error. Index should be major than 1.");
+		if(i > last()) throw new Exception("Method input error. Index out of bondaries.");
+		
+		if(isRoot(i)) return; //to stop the recursion
+		
+		int parent = getParent(i);
+		T parentNode = this.heap.get(parent);
+		T node = this.heap.get(i);
+		if(node.compareTo(parentNode) > 0) {
+			swap(parent, i);
+		}
+		
+		throw new Exception("NOT READY");
+	}
+
+	/**
+	 * Swap elements of the heap array
+	 * @param a index of the first element
+	 * @param b index of the second element
+	 * @throws Exception 
+	 */
+	private void swap(int a, int b) throws Exception {
+		throw new Exception("NOT READY");
+	}
+
+	/**
+	 * Get a parent node.
+	 * @param i Index of the node to process
+	 * @return Index of the parent node, or zero if not exist
+	 */
+	private int getParent(int i) throws Exception {
+		if(i < 1) throw new Exception("Index out of boundary a["+i+"], cannot get the parent for this.");	
+		
+		int p = i / 2;
+		return p;
+	}
+
+	/**
+	 * Verify if a node is the root of the tree
+	 * @param i the index of the node
+	 * @return
+	 */
+	private boolean isRoot(int i) {
+		return i == 1;
 	}
 
 	/**
@@ -40,11 +92,6 @@ public class MaxHeap<T extends Comparable<T>> {
 		return N;
 	}
 
-
-	private void bubbleUp(int n) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	/**
 	 * Set the heap for testing purposes using inversion of control.
@@ -60,23 +107,44 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 	
 	public static void main(String[] args) {
+
 				
 		List<Integer> mockHeadA = new ArrayList<Integer>();
 		MaxHeap<Integer> h = new MaxHeap<Integer>();
 		AssertEqual(h.last(), 0, "size of the heap");
-		h.setHeapForTest(mockHeadA);
+		try {
+			h.bubbleUp(-1);
+			AssertTrue(false, "bubbleUp should not work with incorrect indexes");
+		}catch(Exception e) {
+			AssertTrue(true, e.getMessage());
+		}
+		try {
+			h.bubbleUp(1);
+			AssertTrue(false, "bubbleUp should not work with an index out of boundary");
+		}catch(Exception e) {
+			AssertTrue(true, e.getMessage());
+		}
+		
+		h.setHeapForTest(mockHeadA);		
 		AssertEqual(h.last(), 0, "size of the heap");
+		
 		h.insert(10);
 		AssertTrue(mockHeadA.get(0) == null, "First item of arraylist should be null because we start from index 1");
 		AssertEqual(mockHeadA.get(1), 10, "Insert to root, no bubble up");
 		AssertEqual(h.last(), 1, "size of the heap");
+		try {
+			h.bubbleUp(1);
+			AssertTrue(true, "bubbleUp should not work with an index out of boundary");
+		}catch(Exception e) {
+			AssertTrue(false, e.getMessage());
+		}
 				
 		h.insert(20);
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 20, 10}), "Insert and one bubble up");
 		AssertEqual(h.last(), 2, "size of the heap");
 		
 		h.insert(50);
-		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 50, 10, 20}), "bubble up 50");
+		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 50, 10, 20}), "Insert and bubble up 50");
 		
 		h.insert(70);
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10}), 
@@ -90,6 +158,32 @@ public class MaxHeap<T extends Comparable<T>> {
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5, 12}), 
 				"insert and dont bubble up");
 		
+		try {
+			AssertEqual(h.getParent(6), 3, "Get parent of leaf node"); 			
+			AssertEqual(h.getParent(4), 2, "Get parent of leaf node"); 			
+			AssertEqual(h.getParent(1), 0, "Get parent of leaf node"); 			
+		} catch (Exception e) {
+			AssertError("Something was wrong getting a parent");
+		}
+		try {
+			h.getParent(-1);
+			AssertError("Index out of boundary"); 			
+		} catch (Exception e) {
+			AssertSuccess("Something was wrong getting a parent");
+		}
+
+		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5, 12}), 
+				"insert and dont bubble up");
+
+		
+	}
+	
+	private static void AssertSuccess(String msg) {
+		AssertTrue(true, msg);
+	}
+	
+	private static void AssertError(String msg) {
+		AssertTrue(false, msg);
 	}
 	
 	private static void AssertTrue(boolean val, String msg) {
