@@ -58,6 +58,8 @@ class Node implements Comparable<Node>{
  * <p>
  * For an interactive visualization visit
  * <a href="https://visualgo.net/en/heap">Visualgo</a>
+ * My implementation was inspired on
+ * <a href="https://gist.github.com/davps/276e3853d85954a8c314f34353f27f9a">this</a>
  * @author David Perez
  *
  * @param <T>
