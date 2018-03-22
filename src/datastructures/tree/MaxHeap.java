@@ -95,7 +95,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @param arr
 	 * @throws Exception
 	 */
-	public void create(T[] arr) throws Exception {
+	public void heapify(T[] arr) throws Exception {
 		if(!isEmpty()) throw new Exception("this method works only if the heap is empty");
 		if(arr == null) return;
 		
@@ -112,6 +112,14 @@ public class MaxHeap<T extends Comparable<T>> {
 	public boolean isEmpty() {
 		return (last() == 0);
 	}
+	
+	/**
+	 * Get the size of the heap
+	 * @return number of nodes of the heap
+	 */
+	public int size() {
+		return last();
+	}
 		
 	/**
 	 * Insert item to tail of the the heap array.
@@ -126,7 +134,7 @@ public class MaxHeap<T extends Comparable<T>> {
 				
 		//now I need to bubble up the inserted item to fix the heap property
 		try {
-			bubbleUp(last());
+			siftUp(last());
 		} catch (Exception e) {
 			throw new Exception("Insert error " + e.getMessage());
 		}
@@ -134,12 +142,20 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 
 	/**
-	 * Remove the maximum value from the heap
-	 * Runtime O(N*log(N)) with the actual sortHeap implementation
+	 * Find the maximum item of the heap
+	 * @return the root node of the heap tree
+	 */
+	public T findMax() {
+		return this.heap.get(1);
+	}
+
+	/**
+	 * Returns the maximum value from the heap after removing form the heap.
+	 * Runtime O(N*log(N)) with the actual sortHeap implementation.
 	 * @return the maximum value
 	 * @throws Exception
 	 */
-	public T deleteMax() throws Exception {
+	public T extractMax() throws Exception {
 		if(isEmpty()) throw new Exception("Heap is emtpy");
 		
 		T max = this.heap.get(1); //get a reference the max node (root)
@@ -160,16 +176,19 @@ public class MaxHeap<T extends Comparable<T>> {
 		if(isEmpty()) return;
 		
 		for(int i = 1; i <= last(); i++) {
-			bubbleDown(i);
+			siftDown(i);
 		}
 	}
 	
 	/**
-	 * Bubble up a node.
+	 * Bubble up a node as long as needed to restore the heap property.
 	 * @param i index of the node
 	 * @throws Exception
 	 */
-	private void bubbleUp(int i) throws Exception{
+	/*
+	 * Internally, sometimes I refer to this operation as 'bubble up'
+	 */
+	private void siftUp(int i) throws Exception{
 		checkIndexRange(i);
 		
 		if(isRoot(i)) return; //to stop the recursion
@@ -179,7 +198,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		T node = this.heap.get(i);
 		if(node.compareTo(parentNode) > 0) {
 			swap(parent, i);
-			bubbleUp(parent);
+			siftUp(parent);
 		}
 	}
 
@@ -239,11 +258,14 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 
 	/**
-	 * Bubble down a node.
+	 * Bubble down a node as long as needed to restore the heap property.
 	 * @param i index of the node
 	 * @throws Exception
 	 */
-	private void bubbleDown(int i) throws Exception {
+	/*
+	 * Internally, sometimes I refer to this operation as 'bubble down'
+	 */
+	private void siftDown(int i) throws Exception {
 		checkIndexRange(i);
 		
 		if(isLeaf(i)) return; //to stop the recursion
@@ -267,7 +289,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		T node = this.heap.get(i);
 		if(node.compareTo(childrenNode) < 0) {
 			swap(children, i);
-			bubbleDown(children);
+			siftDown(children);
 		}		
 	}
 
@@ -349,13 +371,13 @@ public class MaxHeap<T extends Comparable<T>> {
 		MaxHeap<Integer> h = new MaxHeap<Integer>();
 		AssertEqual(h.last(), 0, "size of the heap");
 		try {
-			h.bubbleUp(-1);
+			h.siftUp(-1);
 			AssertTrue(false, "bubbleUp should not work with incorrect indexes");
 		}catch(Exception e) {
 			AssertTrue(true, e.getMessage());
 		}
 		try {
-			h.bubbleUp(1);
+			h.siftUp(1);
 			AssertTrue(false, "bubbleUp should not work with an index out of boundary");
 		}catch(Exception e) {
 			AssertTrue(true, e.getMessage());
@@ -378,7 +400,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		AssertEqual(mockHeadA.get(1), 10, "Insert to root, no bubble up");
 		AssertEqual(h.last(), 1, "size of the heap");
 		try {
-			h.bubbleUp(1);
+			h.siftUp(1);
 			AssertTrue(true, "bubbleUp should not work with an index out of boundary");
 		}catch(Exception e) {
 			AssertTrue(false, e.getMessage());
@@ -480,7 +502,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		MaxHeap<Integer> h2 = new MaxHeap<Integer>();
 		h2.setHeapForTest(mockHeapC);
 		try {
-			h2.deleteMax();	
+			h2.extractMax();	
 			AssertError("Should not get here ");
 		} catch (Exception e) {
 			AssertSuccess("Cannot get max because heap is empty");
@@ -508,7 +530,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 		int max = -1;
 		try {
-			max = h2.deleteMax();	
+			max = h2.extractMax();	
 			AssertEqual(max, 10, "Returned the max successfully");
 			AssertEqual(mockHeapC.size(), 1, "Stack is empty");
 		} catch (Exception e) {
@@ -522,13 +544,13 @@ public class MaxHeap<T extends Comparable<T>> {
 			//heap is empty at this point, now fill with two items
 			mockHeapC.add(100);
 			mockHeapC.add(200);
-			h2.bubbleDown(1);
+			h2.siftDown(1);
 			AssertEqual(mockHeapC.get(1), 200, "bubble down the root");
 			AssertEqual(mockHeapC.get(2), 100, "bubble down the root");
 			mockHeapC.add(50); 
 			mockHeapC.add(40);//now head=[200,100,50,40]
 			mockHeapC.set(1, 30); //now head=[30,100,50,40] => I did this to test the bubble up on this scenario
-			h2.bubbleDown(1);//now head=[100,40,50,30]
+			h2.siftDown(1);//now head=[100,40,50,30]
 			AssertEqual(mockHeapC.get(1), 100, "bubble down the root");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -538,9 +560,9 @@ public class MaxHeap<T extends Comparable<T>> {
 		int max3 = -1;
 		int max4 = -1;
 		try {
-			max2 = h.deleteMax();
-			max3 = h.deleteMax();
-			max4 = h.deleteMax();
+			max2 = h.extractMax();
+			max3 = h.extractMax();
+			max4 = h.extractMax();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -550,16 +572,16 @@ public class MaxHeap<T extends Comparable<T>> {
 		
 		MaxHeap<Integer> h3 = new MaxHeap<>();
 		try {
-			h3.create(new Integer[] {});
-			h3.create(null);
+			h3.heapify(new Integer[] {});
+			h3.heapify(null);
 		} catch (Exception e2) {
 			AssertError("Should create event with an empty or null array");
 		}
 		try {
-			h3.create(new Integer[] {1,2,3});
-			AssertEqual(h3.deleteMax(), 3, "create success");
-			AssertEqual(h3.deleteMax(), 2, "create success");
-			AssertEqual(h3.deleteMax(), 1, "create success");
+			h3.heapify(new Integer[] {1,2,3});
+			AssertEqual(h3.extractMax(), 3, "create success");
+			AssertEqual(h3.extractMax(), 2, "create success");
+			AssertEqual(h3.extractMax(), 1, "create success");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -585,10 +607,10 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 		
 		try {
-			Node patientMaxPriority = patientPriorityManager.deleteMax();
-			Node patientMediumPriority = patientPriorityManager.deleteMax();
-			Node patientMediumPriority2 = patientPriorityManager.deleteMax();
-			Node patientLowPriority = patientPriorityManager.deleteMax();
+			Node patientMaxPriority = patientPriorityManager.extractMax();
+			Node patientMediumPriority = patientPriorityManager.extractMax();
+			Node patientMediumPriority2 = patientPriorityManager.extractMax();
+			Node patientLowPriority = patientPriorityManager.extractMax();
 			AssertEqual(patientMaxPriority.id, 3, "pq get max "+patientMaxPriority.message);
 			AssertTrue(patientMediumPriority.id == 1 || patientMediumPriority.id == 4, "pq get medium "+patientMediumPriority.message);
 			AssertTrue(patientMediumPriority.id == 1 || patientMediumPriority.id == 4, "pq get medium "+patientMediumPriority2.message);
