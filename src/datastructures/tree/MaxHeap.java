@@ -105,7 +105,36 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 				
 	}
+
+	/**
+	 * Remove the maximum value from the heap
+	 * @return the maximum value
+	 * @throws Exception
+	 */
+	public T deleteMax() throws Exception {
+		if(last() == 0) throw new Exception("Heap is emtpy");
 		
+		T max = this.heap.get(1); //get a reference the max node (root)
+		swap(1, last()); //move the last node as root
+		this.heap.remove(last()); //then delete the max;
+		
+		sortHeap();
+		
+		return max;
+	}
+
+	/**
+	 * Sort the heap with O(N*log(N)) runtime.
+	 * @throws Exception
+	 */
+	public void sortHeap() throws Exception {
+		if(last() == 0) return;
+		
+		for(int i = 1; i <= last(); i++) {
+			bubbleDown(i);
+		}
+	}
+	
 	/**
 	 * Bubble up a node.
 	 * @param i index of the node
@@ -168,30 +197,6 @@ public class MaxHeap<T extends Comparable<T>> {
 		return N;
 	}
 
-	private T deleteMax() throws Exception {
-		if(last() == 0) throw new Exception("Heap is emtpy");
-		
-		T max = this.heap.get(1); //get a reference the max node (root)
-		swap(1, last()); //move the last node as root
-		this.heap.remove(last()); //then delete the max;
-		
-		sortHeap();
-		
-		return max;
-	}
-
-	/**
-	 * Sort the heap with O(N*log(N)) runtime.
-	 * @throws Exception
-	 */
-	public void sortHeap() throws Exception {
-		if(last() == 0) return;
-		
-		for(int i = 1; i <= last(); i++) {
-			bubbleDown(i);
-		}
-	}
-
 	/**
 	 * Bubble down a node.
 	 * @param i index of the node
@@ -247,6 +252,11 @@ public class MaxHeap<T extends Comparable<T>> {
 		return (i * 2) > last();
 	}
 
+	/**
+	 * Common exception handlers
+	 * @param i
+	 * @throws Exception
+	 */
 	private void checkIndexRange(int i) throws Exception {
 		if(i < 1) throw new Exception("Method input error. Index should be major than 1.");
 		if(i > last()) throw new Exception("Method input error. Index out of bondaries.");
