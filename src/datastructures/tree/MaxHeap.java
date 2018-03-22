@@ -12,12 +12,25 @@ import java.util.List;
  * @param <T>
  */
 class Node implements Comparable<Node>{
+
+	/**
+	 * Unique id
+	 */
 	int id;
+	
+	/**
+	 * Priority level. Bigger value means higher priority
+	 */
 	int priority;
+	
+	/**
+	 * The payload that have a priority. In other custom class implementations
+	 * this could be an object, for example.
+	 */
 	String message;
 	
 	public Node(int id, int priority, String message) {
-		this.id = id;
+		this.id = id;		
 		this.priority = priority;
 		this.message = message;
 	}
