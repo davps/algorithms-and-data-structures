@@ -175,6 +175,10 @@ public class MaxHeap<T extends Comparable<T>> {
 	private int getParent(int i) throws Exception {
 		if(i < 1) throw new Exception("Index out of boundary a["+i+"], cannot get the parent for this.");	
 		
+		/*
+		 * We use this division because it is a balanced tree
+		 * Note that it takes the integer part of the division
+		 */
 		int p = i / 2;
 		return p;
 	}
@@ -185,6 +189,11 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @return
 	 */
 	private boolean isRoot(int i) {
+		/*
+		 * We use one and not zero because the heap array starts with 1
+		 * to simplify the math on the implementation.
+		 * this.heap on position zero is null, and not used.
+		 */
 		return i == 1;
 	}
 
@@ -193,6 +202,9 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @return The index of the node
 	 */
 	private int last() {
+		/*
+		 * Minus one because we didn't use the position zero of the heap
+		 */
 		int N = this.heap.size() - 1;
 		return N;
 	}
@@ -207,12 +219,17 @@ public class MaxHeap<T extends Comparable<T>> {
 		
 		if(isLeaf(i)) return; //to stop the recursion
 
+		//by default we compare for bubble down to the left children
 		int children = getLeftChildren(i);
 		
+		//...but
 		if(hasRightChildren(children)) {
 			T left = this.heap.get(children);
 			T right = this.heap.get(children+1);
 			if(left.compareTo(right) <= 0) {
+				//then we will compare for bubble down with
+				//the right children (that's why we increase
+				//the index by 1)
 				children++;
 			}
 		}
@@ -230,6 +247,11 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @return
 	 */
 	private boolean hasRightChildren(int leftChildren) {
+		/*
+		 * The comparison is as simple as this because we are
+		 * working with a balanced tree, where only the last leaf
+		 * node could potentially not have a right brother node
+		 */
 		return (leftChildren < last());
 	}
 
@@ -239,17 +261,26 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @return index of the left child node
 	 */
 	private int getLeftChildren(int i) {
+		/*
+		 * We just multiply by two since it is a balanced tree.
+		 * Warning: If it is a leaf, the value returned will not be realistic
+		 */
 		int ch = i * 2;
 		return ch;
 	}
 
 	/**
-	 * Verify if a not is a leaf
+	 * Verify if the node isn't a leaf node
 	 * @param i index of the node
 	 * @return
 	 */
 	private boolean isLeaf(int i) {
-		return (i * 2) > last();
+		/*
+		 * A leaf didn't have childrens, i.e., if getLeftChildren()
+		 * returns a value major than the size of the heap, then
+		 * it in fact didn't exist
+		 */
+		return (getLeftChildren(i)) > last();
 	}
 
 	/**
