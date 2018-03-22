@@ -1,4 +1,4 @@
-package datastructures.sorting;
+package datastructures.sorting.bydigit;
 
 /**
  * My implementation was inspired on those algorithms
