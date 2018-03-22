@@ -56,10 +56,20 @@ class Node implements Comparable<Node>{
  * A good summary can be found.
  * <a href="http://www-bcf.usc.edu/~dkempe/CS104/10-24.pdf"> here </a>
  * <p>
- * For an interactive visualization visit
- * <a href="https://visualgo.net/en/heap">Visualgo</a>
+ * For an interactive visualization visit:
+ * <ul>
+ * 	<li><a href="https://visualgo.net/en/heap">Visualgo</a></li>
+ *  <li><a href="https://www.cs.usfca.edu/~galles/visualization/Heap.html">Data 
+ *  structure visualizations</a></li>
+ * </ul>
  * My implementation was inspired on
  * <a href="https://gist.github.com/davps/276e3853d85954a8c314f34353f27f9a">this</a>
+ * 
+ * I recommend reading the wikipedia 
+ * <a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">wikipedia</a> 
+ * <a href="https://en.wikipedia.org/wiki/Binary_heap">page</a>
+ * as the last step of the learning process
+ * 
  * @author David Perez
  *
  * @param <T>
@@ -80,7 +90,8 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 	
 	/**
-	 * Create a heap from an array
+	 * Create a heap from an array.
+	 * Runtime O(N*log(N))
 	 * @param arr
 	 * @throws Exception
 	 */
@@ -95,6 +106,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
 	/**
 	 * Verify if the heap is empty
+	 * Runtime O(1)
 	 * @return true if the heap is empty, otherwise, false.
 	 */
 	public boolean isEmpty() {
@@ -103,7 +115,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		
 	/**
 	 * Insert item to tail of the the heap array.
-	 * Runtime: O(1)
+	 * Runtime: O(log(N))
 	 * @param t Object to be inserted. Implements {@code Comparable}
 	 * @throws Exception 
 	 */
@@ -123,6 +135,7 @@ public class MaxHeap<T extends Comparable<T>> {
 
 	/**
 	 * Remove the maximum value from the heap
+	 * Runtime O(N*log(N)) with the actual sortHeap implementation
 	 * @return the maximum value
 	 * @throws Exception
 	 */
@@ -139,7 +152,8 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 
 	/**
-	 * Sort the heap with O(N*log(N)) runtime.
+	 * Sort the heap 
+ 	 * Runtime: O(N*log(N))
 	 * @throws Exception
 	 */
 	public void sortHeap() throws Exception {
