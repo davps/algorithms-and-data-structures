@@ -63,6 +63,28 @@ public class MaxHeap<T extends Comparable<T>> {
 		//for the heap array to make the math simpler
 		this.heap.add(null); 
 	}
+	
+	/**
+	 * Create a heap from an array
+	 * @param arr
+	 * @throws Exception
+	 */
+	public void create(T[] arr) throws Exception {
+		if(last() != 0) throw new Exception("this method works only if the heap is empty");
+		if(arr == null) return;
+		
+		for(int i = 0; i < arr.length; i++) {
+			insert(arr[i]);
+		}
+	}
+
+	/**
+	 * Verify if the heap is empty
+	 * @return true if the heap is empty, otherwise, false.
+	 */
+	public boolean isEmpty() {
+		return (last() == 0);
+	}
 		
 	/**
 	 * Insert item to tail of the the heap array.
@@ -271,6 +293,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		
 		h.setHeapForTest(mockHeadA);		
 		AssertEqual(h.last(), 0, "size of the heap");
+		AssertTrue(h.isEmpty(), "head is empty");
 		
 		/*
 		 * When there is one node on the heap
@@ -280,6 +303,7 @@ public class MaxHeap<T extends Comparable<T>> {
 		} catch (Exception e1) {
 			AssertError(e1.getMessage());
 		}
+		AssertTrue(!h.isEmpty(), "head is not empty");
 		AssertTrue(mockHeadA.get(0) == null, "First item of arraylist should be null because we start from index 1");
 		AssertEqual(mockHeadA.get(1), 10, "Insert to root, no bubble up");
 		AssertEqual(h.last(), 1, "size of the heap");
@@ -452,7 +476,23 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 		AssertEqual(max2, 70, "get max");
 		AssertEqual(max3, 50, "get max");
-		AssertEqual(max4, 20, "get max");		
+		AssertEqual(max4, 20, "get max");	
+		
+		MaxHeap<Integer> h3 = new MaxHeap<>();
+		try {
+			h3.create(new Integer[] {});
+			h3.create(null);
+		} catch (Exception e2) {
+			AssertError("Should create event with an empty or null array");
+		}
+		try {
+			h3.create(new Integer[] {1,2,3});
+			AssertEqual(h3.deleteMax(), 3, "create success");
+			AssertEqual(h3.deleteMax(), 2, "create success");
+			AssertEqual(h3.deleteMax(), 1, "create success");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		/*
 		 * Priority Queue (PQ) Abstract Data Type (ADT)
