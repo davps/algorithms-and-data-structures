@@ -52,15 +52,14 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 				
 	}
-	
+		
 	/**
 	 * Bubble up a node.
 	 * @param i index of the node
 	 * @throws Exception
 	 */
 	private void bubbleUp(int i) throws Exception{
-		if(i < 1) throw new Exception("Method input error. Index should be major than 1.");
-		if(i > last()) throw new Exception("Method input error. Index out of bondaries.");
+		checkIndexRange(i);
 		
 		if(isRoot(i)) return; //to stop the recursion
 		
@@ -210,6 +209,12 @@ public class MaxHeap<T extends Comparable<T>> {
 		AssertEqual(mockHeadA, Arrays.asList(new Integer[] {null, 70, 50, 20, 10, 5, 12}), 
 				"insert and dont bubble up");
 		
+		AssertTrue(!h.isLeaf(1), "not a leaf");
+		AssertTrue(h.isLeaf(12), "a leaf");
+		AssertEqual(h.getLeftChildren(1), 2, "get left children index");
+		AssertTrue(h.hasRightChildren(2), "50 has right children");
+		AssertTrue(!h.hasRightChildren(6), "12 has not right children");
+		
 		try {
 			AssertEqual(h.getParent(6), 3, "Get parent of leaf node"); 			
 			AssertEqual(h.getParent(4), 2, "Get parent of leaf node"); 			
@@ -240,10 +245,150 @@ public class MaxHeap<T extends Comparable<T>> {
 		} catch (Exception e) {
 			AssertSuccess("swap exception triggered correctly " +e.getMessage());
 		}
-
+		
+		
+		//wrap on array list because I'll resize it
+		//https://stackoverflow.com/a/2965808
+		List<Integer> mockHeapC = new ArrayList<>(Arrays.asList(new Integer[] {null}));
+		MaxHeap<Integer> h2 = new MaxHeap<Integer>();
+		h2.setHeapForTest(mockHeapC);
+		try {
+			h2.deleteMax();	
+			AssertError("Should not get here ");
+		} catch (Exception e) {
+			AssertSuccess("Cannot get max because heap is empty");
+		}
+		
+		try {
+			h2.sortHeap();
+			AssertSuccess("Heap is emtpy so it should sort anyways (do nothing).");
+		} catch (Exception e2) {
+			AssertError("Heap is empty so an exception was thrown when trying to sort");
+		}
+				
+		try {
+			h2.insert(10);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		try {
+			h2.sortHeap();
+		} catch (Exception e1) {
+			AssertEqual(mockHeapC.get(1), 10, "Sort one item");
+		}
+		int max = -1;
+		try {
+			max = h2.deleteMax();	
+			AssertEqual(max, 10, "Returned the max successfully");
+			AssertEqual(mockHeapC.size(), 1, "Stack is empty");
+		} catch (Exception e) {
+			AssertError("deleteMax Should return the max " + e.getMessage());
+		}
+		try {
+			//heap is empty at this point, now fill with two items
+			mockHeapC.add(100);
+			mockHeapC.add(200);
+			h2.bubbleDown(1);
+			AssertEqual(mockHeapC.get(1), 200, "bubble down the root");
+			AssertEqual(mockHeapC.get(2), 100, "bubble down the root");
+			mockHeapC.add(50); 
+			mockHeapC.add(40);//now head=[200,100,50,40]
+			mockHeapC.set(1, 30); //now head=[30,100,50,40]
+			h2.bubbleDown(1);//now head=[100,40,50,30]
+			AssertEqual(mockHeapC.get(1), 100, "bubble down the root");
+//			AssertEqual(mockHeapC.get(4), 30, "bubble down the root");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		
 	}
 	
+	private T deleteMax() throws Exception {
+		if(last() == 0) throw new Exception("Heap is emtpy");
+		
+		T max = this.heap.get(1); //get a reference the max node (root)
+		swap(1, last()); //move the last node as root
+		this.heap.remove(last()); //then delete the max;
+		
+		sortHeap();
+		
+		return max;
+	}
+
+	/**
+	 * Sort the heap with O(N*log(N)) runtime.
+	 * @throws Exception
+	 */
+	public void sortHeap() throws Exception {
+		if(last() == 0) return;
+		
+		for(int i = 1; i <= last(); i++) {
+			bubbleDown(i);
+		}
+	}
+
+	/**
+	 * Bubble down a node.
+	 * @param i index of the node
+	 * @throws Exception
+	 */
+	private void bubbleDown(int i) throws Exception {
+		checkIndexRange(i);
+		
+		if(isLeaf(i)) return; //to stop the recursion
+
+		int children = getLeftChildren(i);
+		
+		if(hasRightChildren(children)) {
+			T left = this.heap.get(children);
+			T right = this.heap.get(children+1);
+			if(left.compareTo(right) <= 0) {
+				children++;
+			}
+		}
+		
+		T childrenNode = this.heap.get(children);
+		T node = this.heap.get(i);
+		if(node.compareTo(childrenNode) < 0) {
+			swap(children, i);
+			bubbleDown(children);
+		}		
+	}
+
+	/**
+	 * Check if a node has a right children
+	 * @return
+	 */
+	private boolean hasRightChildren(int leftChildren) {
+		return (leftChildren < last());
+	}
+
+	/**
+	 * Get the left children of a node, if exist
+	 * @param i index of the node
+	 * @return index of the left child node
+	 */
+	private int getLeftChildren(int i) {
+		int ch = i * 2;
+		return ch;
+	}
+
+	/**
+	 * Verify if a not is a leaf
+	 * @param i index of the node
+	 * @return
+	 */
+	private boolean isLeaf(int i) {
+		return (i * 2) > last();
+	}
+
+	private void checkIndexRange(int i) throws Exception {
+		if(i < 1) throw new Exception("Method input error. Index should be major than 1.");
+		if(i > last()) throw new Exception("Method input error. Index out of bondaries.");
+	}
+
 	private static void AssertSuccess(String msg) {
 		AssertTrue(true, msg);
 	}
