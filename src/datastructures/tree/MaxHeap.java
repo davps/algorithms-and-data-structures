@@ -99,7 +99,7 @@ public class MaxHeap<T extends Comparable<T>> {
 				
 		//now I need to bubble up the inserted item to fix the heap property
 		try {
-			this.bubbleUp(last());
+			bubbleUp(last());
 		} catch (Exception e) {
 			throw new Exception("Insert error " + e.getMessage());
 		}
@@ -163,8 +163,8 @@ public class MaxHeap<T extends Comparable<T>> {
 	private void swap(int a, int b) throws Exception {
 		if(a < 1 || b < 1) throw new Exception("Index out of boundary for swap("+a+","+b+")");
 		T temp = this.heap.get(a);
-		heap.set(a, heap.get(b));
-		heap.set(b, temp);
+		this.heap.set(a, heap.get(b));
+		this.heap.set(b, temp);
 	}
 
 	/**
