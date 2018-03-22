@@ -70,7 +70,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @throws Exception
 	 */
 	public void create(T[] arr) throws Exception {
-		if(last() != 0) throw new Exception("this method works only if the heap is empty");
+		if(!isEmpty()) throw new Exception("this method works only if the heap is empty");
 		if(arr == null) return;
 		
 		for(int i = 0; i < arr.length; i++) {
@@ -112,7 +112,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @throws Exception
 	 */
 	public T deleteMax() throws Exception {
-		if(last() == 0) throw new Exception("Heap is emtpy");
+		if(isEmpty()) throw new Exception("Heap is emtpy");
 		
 		T max = this.heap.get(1); //get a reference the max node (root)
 		swap(1, last()); //move the last node as root
@@ -128,7 +128,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	 * @throws Exception
 	 */
 	public void sortHeap() throws Exception {
-		if(last() == 0) return;
+		if(isEmpty()) return;
 		
 		for(int i = 1; i <= last(); i++) {
 			bubbleDown(i);
