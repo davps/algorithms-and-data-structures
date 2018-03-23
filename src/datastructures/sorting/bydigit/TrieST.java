@@ -6,23 +6,28 @@ package datastructures.sorting.bydigit;
  * Userful learning resources I've used:
  * <ul>
  *   <li>
- *   	<a href="https://algs4.cs.princeton.edu/lectures/52Tries.pdf">From Princeton, with implementation example</a>
+ *   	<a href="https://algs4.cs.princeton.edu/lectures/52Tries.pdf">
+ *   	From Princeton, with implementation example</a>
  *   </li>
  *   <li>
- *   	<a href="https://www.cs.cmu.edu/~fp/courses/15122-f10/lectures/18-tries.pdf"> From CMU</a>
+ *   	<a href="https://www.cs.cmu.edu/~fp/courses/15122-f10/lectures/18-tries.pdf">
+ *   	From CMU</a>
  *   </li>
  *   <li>
- *   	<a href="https://www.cs.cmu.edu/~avrim/451f11/recitations/rec0921.pdf"> More from CMU</a>
+ *   	<a href="https://www.cs.cmu.edu/~avrim/451f11/recitations/rec0921.pdf">
+ *   	More from CMU</a>
  *   </li>
  *   <li>
- *   	<a href="https://medium.com/basecs/trying-to-understand-tries-3ec6bede0014">And this nice blog post</a>
+ *   	<a href="https://medium.com/basecs/trying-to-understand-tries-3ec6bede0014">
+ *   	And this nice blog post</a>
  *   </li>
  * </ul>
  *   <p>
  *   Also, to visualize the test cases I've used a graph drawing tool called graphviz:
  *   <br>
  *   <br>
- *   <a href="http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html">Run online</a>
+ *   <a href="http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html">
+ *   Run online</a>
  *   <a href="https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf">Documentation</a>
  *   
  *   
@@ -39,14 +44,19 @@ public class TrieST {
 	 *    => 'b' (at index 1)
 	 *  to simplify the development, debugging and drawing
 	 */
-	private static int ALPHABET_SIZE = 2;
+	private static final int ALPHABET_SIZE = 2;
 	
 	/**
 	 * The root node of the trie tree.
 	 * Which by default have null values and an empty array 
 	 * with size {@code TrieST#ALPHABET_SIZE} for the links
 	 */
-	Node root = new Node();
+	private final Node root = new Node();
+
+	private static final int CONST_A = 0;
+	private static final int CONST_B = 1;	
+	private static final char CONST_VAL_A = 'a';
+	private static final char CONST_VAL_B = 'b';
 	
 	/**
 	 * The node of the Trie
@@ -59,12 +69,21 @@ public class TrieST {
 		 * It works like a hash table, where for each key we lookup
 		 * for its associated value
 		 */
-		Object value = null;
+		private Object value;
 		
 		/**
 		 * Array that will store the links to the child nodes of the tree.
 		 */
-		Node[] next = new Node[ALPHABET_SIZE];
+		public final Node[] next = new Node[ALPHABET_SIZE];
+
+		public Object getValue() {
+			return value;
+		}
+
+		public void setValue(final Object value) {
+			this.value = value;
+		}
+
 	}
 	
 	/**
@@ -73,7 +92,7 @@ public class TrieST {
 	 * @param value
 	 * @throws Exception 
 	 */
-	public void insert(String key, int value) throws Exception {
+	public void insert(final String key, final int value) throws Exception {
 		insert(this.root, key, value, 0);
 	}
 	
@@ -82,22 +101,26 @@ public class TrieST {
 	 * @param base
 	 * @param key
 	 * @param value
-	 * @param d
+	 * @param index
 	 * @return
 	 */
-	private Node insert(Node base, String key, int value, int d) {
-		if(base == null) base = new Node();
+	private Node insert(final Node node, final String key, final int value, final int index) {
+		Node base = node;
+		
+		if(base == null) {
+			base = new Node();
+		}
 		
 		//ends the recursion when encounter the node of the
 		//last character after following the links
-		if(d == key.length()) { 
-			base.value = value;
+		if(index == key.length()) { 
+			base.setValue(value);
 			return base;
 		}
 		
-		char character = key.charAt(d);
-		int child = index(character);
-		base.next[child] = insert(base.next[child], key, value, d+1);
+		final char character = key.charAt(index);
+		final int child = childIndex(character);
+		base.next[child] = insert(base.next[child], key, value, index+1);
 		
 		return base;
 	}
@@ -107,19 +130,17 @@ public class TrieST {
 	 * @param character
 	 * @return
 	 */
-	private int index(char character) {
-		if(character == 'a') {
+	private int childIndex(final char character) {
+		if(character == CONST_VAL_A) {
 			return 0;
-		}else if(character == 'b') {
+		}else if(character == CONST_VAL_B) {
 			return 1;
 		}
 		
-		//send this value because it will fail when used because we didn't support other characters
+		//send this value because it will fail when used because 
+		//we didn't support other characters
 		return -1; 
 	}
-
-	private static int CONST_A = 0;
-	private static int CONST_B = 1;
 
 	/**
 	 * Test cases:
@@ -129,7 +150,10 @@ public class TrieST {
 	 * -Without external dependencies
 	 * -Everything is on this single file (no make it easy to reproduce in codepad, for example)
 	 * -I use digraph - dot (graphviz) language to represent the graph, an online 
-	 *  renderer can be found here http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html
+	 *  renderer can be found here 
+	 *  http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html
+	 * -I violates the Law of Demeter of the instance on my tests, because I want 
+	 *  to test the internal states.
 	 * @param args
 	 */
 	private static String msgA = "Follow links corresponding to each character in the key, ";	
@@ -137,7 +161,7 @@ public class TrieST {
 	public static void main(String[] args) {
 		System.out.println("Put test cases");
 		
-		TrieST t = new TrieST();
+		final TrieST t = new TrieST();
 
 
 		/*
@@ -181,10 +205,10 @@ public class TrieST {
 			  "node_2 ch=b val=888"->null_6
 			}
 		*/
-		Assert((int)t.root.next[CONST_A].next[CONST_B].value == 888, "Links are correct");
+		assertTrue((int)t.root.next[CONST_A].next[CONST_B].getValue() == 888, "Links are correct");
 	}
 	
-	private static void baseCaseTestBeforePut(Node base) {
+	private static void baseCaseTestBeforePut(final Node base) {
 		/* My base case, the instance is empty
 		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20base-%3Enull_1%0A%09%09%20%20base-%3Enull_2%0A%09%09%7D%0A		 
 		digraph{
@@ -192,11 +216,12 @@ public class TrieST {
 		  base->null_2
 		}
 		*/		
-		Assert(base.next[CONST_A] == null, msgA + msgA1);
-		Assert(base.next[CONST_B] == null, msgA + msgA1);
+		assertTrue(base.next[CONST_A] == null, msgA + msgA1);
+		assertTrue(base.next[CONST_B] == null, msgA + msgA1);
 	}
 
-	private static void baseCaseTestAfterPut(Node base, int value, int charInUse, int charNotUsed, String msg) {
+	private static void baseCaseTestAfterPut(final Node base, final int value, final int charInUse, 
+			final int charNotUsed, final String msg) {
 		/*My base case, after PUT, the instance now have a single letter
 		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20base-%3E%22node_1%20ch%3Da%20val%3D777%22-%3Enull_3%0A%09%09%20%20base-%3Enull_2%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3Enull_4%0A%09%09%7D%0A
 		digraph{
@@ -205,19 +230,20 @@ public class TrieST {
 		  "node_1 ch=a val=777"->null_4
 		}
 		 */
-		Node node_1 = base.next[charInUse];
-		Assert(node_1 != null, msgA + msgA1 + " - " + msg + " A ");
-		Assert(base.next[charNotUsed] == null, msgA + msgA1 + " - " + msg + " B ");
-		Assert(node_1.next[charInUse] == null, msgA + msgA1 + " - " + msg + " C ");
-		Assert(node_1.next[charNotUsed] == null, msgA + msgA1 + " - " + msg + " D ");
+		final Node node_1 = base.next[charInUse];
+		String separator = " - ";
+		assertTrue(node_1 != null, msgA + msgA1 + separator + msg + " A ");
+		assertTrue(base.next[charNotUsed] == null, msgA + msgA1 + separator + msg + " B ");
+		assertTrue(node_1.next[charInUse] == null, msgA + msgA1 + separator + msg + " C ");
+		assertTrue(node_1.next[charNotUsed] == null, msgA + msgA1 + separator + msg + " D ");
 		
 		String msgA2 = "encounter the last character of the key, then set value on that node";
-		Assert((int)node_1.value == value, msgA + msgA2 + " - " + msg + " E ");
+		assertTrue((int)node_1.getValue() == value, msgA + msgA2 + separator + msg + " E ");
 		
 	}
 
-	private static void Assert(boolean assertion, String msg) {
-		if(assertion == true) {
+	private static void assertTrue(final boolean pass, final String msg) {
+		if(pass) {
 			System.out.println("Success: "+msg);
 		}else {
 			System.err.println("Error: "+msg);
