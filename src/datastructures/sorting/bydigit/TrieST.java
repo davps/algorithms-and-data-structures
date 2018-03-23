@@ -41,6 +41,13 @@ public class TrieST {
 	private static int ALPHABET_SIZE = 2;
 	
 	/**
+	 * The root node of the trie tree.
+	 * Which by default have null values and an empty array 
+	 * with size {@code TrieST#ALPHABET_SIZE} for the links
+	 */
+	private Node root = new Node();
+	
+	/**
 	 * The node of the Trie
 	 * @author david
 	 *
@@ -51,12 +58,21 @@ public class TrieST {
 		 * It works like a hash table, where for each key we lookup
 		 * for its associated value
 		 */
-		Object value;
+		Object value = null;
 		
 		/**
 		 * Array that will store the links to the child nodes of the tree.
 		 */
 		Node[] next = new Node[ALPHABET_SIZE];
+	}
+	
+	/**
+	 * Insert an entry to the trie
+	 * @param key
+	 * @param value
+	 */
+	public void insert(String key, int value) {
+		throw new Error("NOT IMPLEMENTED");
 	}
 	
 	private static int CONST_A = 0;
@@ -89,7 +105,7 @@ public class TrieST {
 		}
 		 */
 		baseCaseTestBeforePut(t.root);
-		t.put("a", 777);
+		t.insert("a", 777);
 		baseCaseTestAfterPut(t.root, 777);
 
 		/*
@@ -100,8 +116,8 @@ public class TrieST {
 		}
 		 */		
 		baseCaseTestBeforePut(t.root.next[CONST_A]);
-		t.put("ab", 888);
-		baseCaseTestAfterPut(t.root.next[CONST_A], "a", 888);
+		t.insert("ab", 888);
+		baseCaseTestAfterPut(t.root.next[CONST_A], 888);
 		
 		/*after those two puts we have: (dont' worry about the null with different ids):
 			digraph{
@@ -111,7 +127,7 @@ public class TrieST {
 			  "node_2 ch=b val=888"->null_6
 			}
 		*/
-		Assert(t.root.next[CONST_A].next[CONST_B].value == 888, "Links are correct");
+		Assert((int)t.root.next[CONST_A].next[CONST_B].value == 888, "Links are correct");
 	}
 	
 	private static void baseCaseTestBeforePut(Node base) {
@@ -141,6 +157,15 @@ public class TrieST {
 		
 		String msgA2 = "encounter the last character of the key, then set value on that node";
 		Assert((int)node_1.value == value, msgA + msgA2);
+		
+	}
+
+	private static void Assert(boolean assertion, String msg) {
+		if(assertion == true) {
+			System.out.println("Success: "+msg);
+		}else {
+			System.err.println("Error: "+msg);
+		}
 		
 	}
 	
