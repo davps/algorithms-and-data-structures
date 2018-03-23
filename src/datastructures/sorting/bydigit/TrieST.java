@@ -33,8 +33,10 @@ public class TrieST {
 	/**
 	 * The size of the alphabet to be supported
 	 * For example, ALPHABET_SIZE = 256 for ASCII characters
-	 * On this case, we support just two characters to simplify 
-	 * the development, debugging and drawing
+	 * On this case, we support just two characters:
+	 *    => 'a' (at index 0)
+	 *    => 'b' (at index 1)
+	 *  to simplify the development, debugging and drawing
 	 */
 	private static int ALPHABET_SIZE = 2;
 	
@@ -56,10 +58,91 @@ public class TrieST {
 		 */
 		Node[] next = new Node[ALPHABET_SIZE];
 	}
+	
+	private static int CONST_A = 0;
+	private static int CONST_B = 1;
 
+	/**
+	 * Test cases:
+	 * -This algorithm was developed with the TDD methodology (write tests first, then
+	 *  implement the code that passes the tests). TDD is suitable for this case because
+	 *  the requirements are well known.
+	 * -Without external dependencies
+	 * -Everything is on this single file (no make it easy to reproduce in codepad, for example)
+	 * -I use digraph - dot (graphviz) language to represent the graph, an online 
+	 *  renderer can be found here http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html
+	 * @param args
+	 */
+	private static String msgA = "Follow links corresponding to each character in the key, ";	
+	private static String msgA1 = "encounter a null link, then create a new node";
 	public static void main(String[] args) {
+		System.out.println("Put test cases");
 		
+		TrieST t = new TrieST();
 
+
+		/*
+		digraph{
+		  base->"node_1 ch=a val=777"->null_3
+		  base->null_2
+		  "node_1 ch=a val=777"->null_4
+		}
+		 */
+		baseCaseTestBeforePut(t.root);
+		t.put("a", 777);
+		baseCaseTestAfterPut(t.root, 777);
+
+		/*
+		digraph{
+		  "node_1 ch=a val=777"->null_4
+		  "node_1 ch=a val=777"->"node_2 ch=b val=888"->null_5
+		  "node_2 ch=b val=888"->null_6
+		}
+		 */		
+		baseCaseTestBeforePut(t.root.next[CONST_A]);
+		t.put("ab", 888);
+		baseCaseTestAfterPut(t.root.next[CONST_A], "a", 888);
+		
+		/*after those two puts we have: (dont' worry about the null with different ids):
+			digraph{
+			  base->"node_1 ch=a val=777"->null_3
+			  base->null_2
+			  "node_1 ch=a val=777"->"node_2 ch=b val=888"->null_5
+			  "node_2 ch=b val=888"->null_6
+			}
+		*/
+		Assert(t.root.next[CONST_A].next[CONST_B].value == 888, "Links are correct");
+	}
+	
+	private static void baseCaseTestBeforePut(Node base) {
+		/* My base case, the instance is empty
+		digraph{
+		  base->null_1
+		  base->null_2
+		}
+		*/		
+		Assert(base.next[CONST_A] == null, msgA + msgA1);
+		Assert(base.next[CONST_B] == null, msgA + msgA1);
 	}
 
+	private static void baseCaseTestAfterPut(Node base, int value) {
+		/*My base case, after PUT, the instance now have a single letter
+		digraph{
+		  base->"node_1 ch=a val=777"->null_3
+		  base->null_2
+		  "node_1 ch=a val=777"->null_4
+		}
+		 */
+		Node node_1 = base.next[CONST_A];
+		Assert(node_1 != null, msgA + msgA1);
+		Assert(base.next[CONST_B] == null, msgA + msgA1);
+		Assert(node_1.next[CONST_A] == null, msgA + msgA1);
+		Assert(node_1.next[CONST_B] == null, msgA + msgA1);
+		
+		String msgA2 = "encounter the last character of the key, then set value on that node";
+		Assert((int)node_1.value == value, msgA + msgA2);
+		
+	}
+	
+	
 }
