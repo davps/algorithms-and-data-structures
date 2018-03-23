@@ -23,7 +23,7 @@ package datastructures.sorting.bydigit;
  *   <br>
  *   <br>
  *   <a href="http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html">Run online</a>
- *   <a href="https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf>Documentation</a>
+ *   <a href="https://graphviz.gitlab.io/_pages/pdf/dotguide.pdf">Documentation</a>
  *   
  *   
  * @author David Perez
