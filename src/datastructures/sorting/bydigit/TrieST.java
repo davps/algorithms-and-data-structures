@@ -1,5 +1,7 @@
 package datastructures.sorting.bydigit;
 
+import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
+
 /**
  * Implementation of the R-way trie algorithm
  * <p>
@@ -45,7 +47,7 @@ public class TrieST {
 	 * Which by default have null values and an empty array 
 	 * with size {@code TrieST#ALPHABET_SIZE} for the links
 	 */
-	private Node root = new Node();
+	Node root = new Node();
 	
 	/**
 	 * The node of the Trie
@@ -70,11 +72,45 @@ public class TrieST {
 	 * Insert an entry to the trie
 	 * @param key
 	 * @param value
+	 * @throws Exception 
 	 */
-	public void insert(String key, int value) {
-		throw new Error("NOT IMPLEMENTED");
+	public void insert(String key, int value) throws Exception {
+		insert(this.root, key, value, 0);
 	}
 	
+	private Node insert(Node base, String key, int value, int d) {
+		if(base == null) base = new Node();
+		
+		//ends the recursion when encounter the node of the
+		//last character after following the links
+		if(d == key.length()) { 
+			base.value = value;
+			return base;
+		}
+		
+		char character = key.charAt(d);
+		int child = index(character);
+		base.next[child] = insert(base.next[child], key, value, d+1);
+		
+		return base;
+	}
+	
+	/**
+	 * Get the index of the child node for the given character
+	 * @param character
+	 * @return
+	 */
+	private int index(char character) {
+		if(character == 'a') {
+			return 0;
+		}else if(character == 'b') {
+			return 1;
+		}
+		
+		//send this value because it will fail when used because we didn't support other characters
+		return -1; 
+	}
+
 	private static int CONST_A = 0;
 	private static int CONST_B = 1;
 
@@ -98,17 +134,23 @@ public class TrieST {
 
 
 		/*
+		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20root-%3E%22node_1%20ch%3Da%20val%3D777%22-%3Enull_3%0A%09%09%20%20root-%3Enull_2%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3Enull_4%0A%09%09%7D%0A
 		digraph{
-		  base->"node_1 ch=a val=777"->null_3
-		  base->null_2
+		  root->"node_1 ch=a val=777"->null_3
+		  root->null_2
 		  "node_1 ch=a val=777"->null_4
 		}
 		 */
 		baseCaseTestBeforePut(t.root);
-		t.insert("a", 777);
-		baseCaseTestAfterPut(t.root, 777);
+		try {
+			t.insert("a", 777);			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		baseCaseTestAfterPut(t.root, 777, CONST_A, CONST_B, " 777 ");
 
 		/*
+		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3Enull_4%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3E%22node_2%20ch%3Db%20val%3D888%22-%3Enull_5%0A%09%09%20%20%22node_2%20ch%3Db%20val%3D888%22-%3Enull_6%0A%09%09%7D%0A
 		digraph{
 		  "node_1 ch=a val=777"->null_4
 		  "node_1 ch=a val=777"->"node_2 ch=b val=888"->null_5
@@ -116,10 +158,15 @@ public class TrieST {
 		}
 		 */		
 		baseCaseTestBeforePut(t.root.next[CONST_A]);
-		t.insert("ab", 888);
-		baseCaseTestAfterPut(t.root.next[CONST_A], 888);
+		try {
+			t.insert("ab", 888);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		baseCaseTestAfterPut(t.root.next[CONST_A], 888, CONST_B, CONST_A,  " 888 ");
 		
 		/*after those two puts we have: (dont' worry about the null with different ids):
+			http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3Enull_4%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3E%22node_2%20ch%3Db%20val%3D888%22-%3Enull_5%0A%09%09%20%20%22node_2%20ch%3Db%20val%3D888%22-%3Enull_6%0A%09%09%7D%0A		 
 			digraph{
 			  base->"node_1 ch=a val=777"->null_3
 			  base->null_2
@@ -132,6 +179,7 @@ public class TrieST {
 	
 	private static void baseCaseTestBeforePut(Node base) {
 		/* My base case, the instance is empty
+		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20base-%3Enull_1%0A%09%09%20%20base-%3Enull_2%0A%09%09%7D%0A		 
 		digraph{
 		  base->null_1
 		  base->null_2
@@ -141,22 +189,23 @@ public class TrieST {
 		Assert(base.next[CONST_B] == null, msgA + msgA1);
 	}
 
-	private static void baseCaseTestAfterPut(Node base, int value) {
+	private static void baseCaseTestAfterPut(Node base, int value, int charInUse, int charNotUsed, String msg) {
 		/*My base case, after PUT, the instance now have a single letter
+		http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html?graph=%09%09digraph%7B%0A%09%09%20%20base-%3E%22node_1%20ch%3Da%20val%3D777%22-%3Enull_3%0A%09%09%20%20base-%3Enull_2%0A%09%09%20%20%22node_1%20ch%3Da%20val%3D777%22-%3Enull_4%0A%09%09%7D%0A
 		digraph{
 		  base->"node_1 ch=a val=777"->null_3
 		  base->null_2
 		  "node_1 ch=a val=777"->null_4
 		}
 		 */
-		Node node_1 = base.next[CONST_A];
-		Assert(node_1 != null, msgA + msgA1);
-		Assert(base.next[CONST_B] == null, msgA + msgA1);
-		Assert(node_1.next[CONST_A] == null, msgA + msgA1);
-		Assert(node_1.next[CONST_B] == null, msgA + msgA1);
+		Node node_1 = base.next[charInUse];
+		Assert(node_1 != null, msgA + msgA1 + " - " + msg + " A ");
+		Assert(base.next[charNotUsed] == null, msgA + msgA1 + " - " + msg + " B ");
+		Assert(node_1.next[charInUse] == null, msgA + msgA1 + " - " + msg + " C ");
+		Assert(node_1.next[charNotUsed] == null, msgA + msgA1 + " - " + msg + " D ");
 		
 		String msgA2 = "encounter the last character of the key, then set value on that node";
-		Assert((int)node_1.value == value, msgA + msgA2);
+		Assert((int)node_1.value == value, msgA + msgA2 + " - " + msg + " E ");
 		
 	}
 
