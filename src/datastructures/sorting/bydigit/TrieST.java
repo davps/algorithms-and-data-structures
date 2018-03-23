@@ -1,7 +1,5 @@
 package datastructures.sorting.bydigit;
 
-import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
-
 /**
  * Implementation of the R-way trie algorithm
  * <p>
@@ -32,6 +30,7 @@ import com.sun.corba.se.impl.oa.poa.ActiveObjectMap.Key;
  *
  */
 public class TrieST {
+	
 	/**
 	 * The size of the alphabet to be supported
 	 * For example, ALPHABET_SIZE = 256 for ASCII characters
@@ -78,6 +77,14 @@ public class TrieST {
 		insert(this.root, key, value, 0);
 	}
 	
+	/**
+	 * {@inheritDoc TrieST#insert(String, int)}
+	 * @param base
+	 * @param key
+	 * @param value
+	 * @param d
+	 * @return
+	 */
 	private Node insert(Node base, String key, int value, int d) {
 		if(base == null) base = new Node();
 		
