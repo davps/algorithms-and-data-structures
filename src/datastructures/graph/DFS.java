@@ -9,7 +9,7 @@ import java.util.Map;
  * @author David Perez
  *
  */
-class BFSNode {
+class DFSNode {
 	/**
 	 * Value of the node
 	 */
@@ -19,7 +19,7 @@ class BFSNode {
 	 * Adjacent nodes
 	 * I use a hash map to avoid duplicated inserts
 	 */
-	private final Map<Integer, BFSNode> adjacents = new HashMap<Integer, BFSNode>();
+	private final Map<Integer, DFSNode> adjacents = new HashMap<Integer, DFSNode>();
 	
 	/**
 	 * Flag to be used on the graph traversal
@@ -54,7 +54,7 @@ class BFSNode {
 	 * of the node instance
 	 * @return
 	 */
-	public Collection<BFSNode> getAdjacents() {
+	public Collection<DFSNode> getAdjacents() {
 		return adjacents.values();
 	}
 	
@@ -70,8 +70,8 @@ class BFSNode {
 	 * Add adjacent nodes to the node instance
 	 * @param nodes
 	 */
-	public final void addAdjacents(final BFSNode... nodes) {
-		for(final BFSNode node : nodes) {
+	public final void addAdjacents(final DFSNode... nodes) {
+		for(final DFSNode node : nodes) {
 			final int key = node.getValue();
 			if(!adjacents.containsKey(key)) {
 				adjacents.put(key, node);
@@ -88,9 +88,9 @@ class BFSNode {
 	 * @param value
 	 * @param adjacents
 	 */
-	public BFSNode(final int value, final BFSNode... adjacents) {
+	public DFSNode(final int value, final DFSNode... adjacents) {
 		this.value = value;
-		for(final BFSNode node : adjacents) {
+		for(final DFSNode node : adjacents) {
 			addAdjacents(node);
 		}
 	}
@@ -103,7 +103,7 @@ class BFSNode {
  */
 public class DFS {
 	
-	private String search(final BFSNode base) {		
+	private String search(final DFSNode base) {		
 		if(base.isVisited()) {
 			return "";
 		}
@@ -111,7 +111,7 @@ public class DFS {
 		final StringBuffer path = new StringBuffer();
 		path.append(visit(base));
 		
-		for(final BFSNode node: base.getAdjacents()) {
+		for(final DFSNode node: base.getAdjacents()) {
 			path.append(search(node));
 		}
 		
@@ -125,7 +125,7 @@ public class DFS {
 	 * @param base
 	 * @return
 	 */
-	private String visit(final BFSNode base) {
+	private String visit(final DFSNode base) {
 		base.setAsVisited();
 		return Integer.toString(base.getValue()) + "->";
 	}
@@ -148,9 +148,9 @@ public class DFS {
 		}		
 		*/		
 		
-		BFSNode base = new BFSNode(0);
-		BFSNode node1 = new BFSNode(1);
-		BFSNode node2 = new BFSNode(2);
+		DFSNode base = new DFSNode(0);
+		DFSNode node1 = new DFSNode(1);
+		DFSNode node2 = new DFSNode(2);
 		base.addAdjacents(node1, node2);
 		node2.addAdjacents(node1);
 		
@@ -174,12 +174,12 @@ public class DFS {
 				0->5
 			}	
 		 */
-		BFSNode n0 = new BFSNode(0);
-		BFSNode n1 = new BFSNode(1);
-		BFSNode n2 = new BFSNode(2);
-		BFSNode n3 = new BFSNode(3);
-		BFSNode n4 = new BFSNode(4);
-		BFSNode n5 = new BFSNode(5);
+		DFSNode n0 = new DFSNode(0);
+		DFSNode n1 = new DFSNode(1);
+		DFSNode n2 = new DFSNode(2);
+		DFSNode n3 = new DFSNode(3);
+		DFSNode n4 = new DFSNode(4);
+		DFSNode n5 = new DFSNode(5);
 		n0.addAdjacents(n1);
 		n1.addAdjacents(n3);
 		n3.addAdjacents(n2);
