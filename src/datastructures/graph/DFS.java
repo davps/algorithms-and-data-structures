@@ -112,7 +112,9 @@ public class DFS {
 		path.append(visit(base));
 		
 		for(final DFSNode node: base.getAdjacents()) {
-			path.append(search(node));
+			if(!node.isVisited()) {
+				path.append(search(node));				
+			}
 		}
 		
 		return path.toString();
