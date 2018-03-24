@@ -1,20 +1,10 @@
 package datastructures.graph;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class BFS {
-	
-	private transient Queue queue;
-	
-	private Queue createQueue() {
-		this.queue = new Queue();
-		return this.queue;
-	}
-		
+				
 	/**
 	 * Queue of {@code Node} instances.
 	 * @author david
@@ -100,7 +90,7 @@ public class BFS {
 					node0:pointer -> node1:data;
 					node1:pointer -> node2:data;
 				}
-		 */
+			 */
 			
 			//then we incorporate the node to the queue as the 
 			//last item of the linked list
@@ -193,7 +183,7 @@ public class BFS {
 	 * 
 	 * @author David Perez
 	 */
-	private class BFSNode {
+	private class BFSNode implements Comparable<BFSNode> {
 		
 		/**
 		 * The value contained by the graph
@@ -208,8 +198,10 @@ public class BFS {
 		
 		/**
 		 * Adjacent vertexs using map to avoid duplicated links.
+		 * I need to order the nodes by insert to follow my test examples more easily
+		 * that's why I'm using a LinkedHashSet
 		 */
-		private final Map<Integer, BFSNode> adjacents = new HashMap<Integer, BFSNode>();
+		private final Set<BFSNode> adjacents = new LinkedHashSet<BFSNode>();
 	
 		/**
 		 * Add one or more adjacent nodes to the actual node.
@@ -217,8 +209,8 @@ public class BFS {
 		 */
 		public void addAdjacents(final BFSNode...nodes) {
 			for(final BFSNode node: nodes) {
-				if(!adjacents.containsKey(node.getValue())) {
-					adjacents.put(node.getValue(), node);
+				if(!adjacents.contains(node)) {
+					adjacents.add(node);
 				}
 			}
 		}
@@ -227,8 +219,9 @@ public class BFS {
 		 * Get the adjacent nodes for this node instance
 		 * @return
 		 */
-		public Collection<BFSNode> getAdjacents(){
-			return this.adjacents.values();
+		public BFSNode[] getAdjacents(){
+			final BFSNode[] arr = new BFSNode[this.adjacents.size()];
+			return this.adjacents.toArray(arr);
 		}
 		
 		/**
@@ -243,16 +236,15 @@ public class BFS {
 		 * Mark the node as visited
 		 * @return
 		 */
-		public BFSNode visit() {
+		public void markAsVisited() {
 			this.visited = true;
-			return this;
 		}
 		
 		/**
 		 * Ask if the node was already visited
 		 * @return
 		 */
-		public boolean hasVisitedMark() {
+		public boolean hasVisited() {
 			return this.visited;
 		}
 		
@@ -263,6 +255,17 @@ public class BFS {
 		public BFSNode(final int value) {
 			this.value = value;
 		}
+
+		@Override
+		public int compareTo(BFSNode o) {
+			if(this.value > o.value) {
+				return 1;
+			}else if(this.value < o.value) {
+				return -1;
+			}else {
+				return 0;
+			}
+		}
 				
 	}		
 	
@@ -272,11 +275,29 @@ public class BFS {
 	 * @param base
 	 * @return The order of the traverse
 	 */
-	public String search(final BFSNode base) {
-		Queue queue = createQueue();
-		return null;
+	public String search(final BFSNode root) {
+		final StringBuffer order = new StringBuffer();
+		
+		final Queue queue = new Queue();
+		queue.enqueue(root);
+		
+		while(!queue.isEmpty()) {
+			final BFSNode node = queue.dequeue();
+			order.append(visit(node));
+			for(final BFSNode child : node.getAdjacents()) {
+				if(!child.hasVisited()) {
+					child.markAsVisited();
+					queue.enqueue(child);					
+				}
+			}
+		}
+		
+		return order.toString();		
 	}
 
+	private String visit(final BFSNode node) {
+		return (node.getValue() + "->");		
+	}
 	
 	/**
 	 * Test cases
@@ -350,7 +371,7 @@ public class BFS {
 		x3.addAdjacents(x2);
 		final String result2 = bfs.search(x0);
 		final String msg2 = "0->1->4->5->3->2->";
-		assertEqual(result2, msg1, "BFS " + msg2);
+		assertEqual(result2, msg2, "BFS " + msg2);
 		
 	}
 
