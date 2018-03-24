@@ -87,6 +87,92 @@ class Node {
 			
 }
 
+/**
+ * Auxiliary class used as node of the queue.
+ * @author david
+ *
+ */
+class QueueNode{
+	
+	/**
+	 * Link to the next node of the queue
+	 */
+	public transient QueueNode next;
+	
+	/**
+	 * Value of the actual node
+	 */
+	public transient final Node value;
+	
+	/**
+	 * Construct the instance with an initial value
+	 * @param value
+	 */
+	public QueueNode(final Node value) {
+		this.value = value;
+	}
+}
+
+/**
+ * Queue of {@code Node} instances.
+ * @author david
+ * TODO test the queue
+ */
+class Queue{
+	/**
+	 * First element of the queue (FIFO)
+	 */
+	private transient QueueNode first;
+	
+	/**
+	 * Last element of the queue (FIFO)
+	 */
+	private transient QueueNode last;
+	
+	/**
+	 * Ask if the queue is empty or not
+	 * @return true is the queue is empty, otherwise, return false
+	 */
+	public boolean isEmpty() {
+		return this.first == null;
+	}
+	
+	/**
+	 * Insert a {@code Node} to the queue.
+	 * @param value
+	 */
+	public void enqueue(final Node value) {
+		final QueueNode node = new QueueNode(value);
+		if(this.first == null) {
+			this.first = node;
+			this.last = first;
+			return;
+		}
+		
+		last.next = node;
+		last = last.next;
+	}
+	
+	/**
+	 * Remove the first item of queue (FIFO) and return it.
+	 * @return
+	 */
+	public Node dequeue() {
+		if(this.first == null) {
+			return null;
+		}
+		
+		final QueueNode node = this.first;
+		this.first = this.first.next;
+		
+		if(this.first == null) {
+			this.last = null;
+			return null;
+		}
+		
+		return node.value;
+	}
+}
 
 public class BFS {
 	
