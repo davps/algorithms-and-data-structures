@@ -1,7 +1,110 @@
 package datastructures.graph;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Vertex of the Graph
+ * 
+ * Internally I use a HashMap to store the values, but it is encapsulated
+ * complaining to the Law of Demeter, so I can change the usage of the
+ * HashMap for another kind of collection if required, without changing
+ * the code of the other classes.
+ * 
+ * @author David Perez
+ */
+class Node {
+	
+	/**
+	 * The value contained by the graph
+	 */
+	private final int value;
+	
+	/**
+	 * Mark used to know if a node was already visited
+	 * during the search() 
+	 */
+	private transient boolean visited;
+	
+	/**
+	 * Adjacent vertexs using map to avoid duplicated links.
+	 */
+	private final Map<Integer, Node> adjacents = new HashMap<Integer, Node>();
+
+	/**
+	 * Add one or more adjacent nodes to the actual node.
+	 * @param nodes
+	 */
+	public void addAdjacents(Node...nodes) {
+		for(final Node node: nodes) {
+			if(!adjacents.containsKey(node.getValue())) {
+				adjacents.put(node.getValue(), node);
+			}
+		}
+	}
+
+	/**
+	 * Get the adjacent nodes for this node instance
+	 * @return
+	 */
+	public Collection<Node> getAdjacents(){
+		return this.adjacents.values();
+	}
+	
+	/**
+	 * Get the value of the node
+	 * @return
+	 */
+	public int getValue() {
+		return this.value;
+	}
+	
+	/**
+	 * Mark the node as visited
+	 * @return
+	 */
+	public Node visit() {
+		this.visited = true;
+		return this;
+	}
+	
+	/**
+	 * Ask if the node was already visited
+	 * @return
+	 */
+	public boolean hasVisitedMark() {
+		return this.visited;
+	}
+	
+	/**
+	 * Construct the node instance with an initial value.
+	 * @param value
+	 */
+	public Node(final int value) {
+		this.value = value;
+	}
+			
+}
+
+
 public class BFS {
 	
+
+	/**
+	 * Traverse the graph
+	 * @param base
+	 * @return The order of the traverse
+	 */
+	public String search(final Node base) {
+		return null;
+	}
+
+	
+	/**
+	 * Test cases
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		/*		
 			digraph{
@@ -10,7 +113,7 @@ public class BFS {
 			 "2 visited=false"->"1 visited=true"
 			 "1 visited=true"->null;
 		}		
-		*/		
+		*/	
 		final Node n0 = new Node(0);
 		final Node n1 = new Node(1);
 		final Node n2 = new Node(2);
@@ -54,7 +157,7 @@ public class BFS {
 		assertEqual(result2, msg1, "BFS " + msg2);
 	}
 
-	private static void assertEqual(String result, String expect, String msg) {
+	private static void assertEqual(final String result, final String expect, final String msg) {
 		if(result.equals(expect)) {
 			System.out.println("Success: "+msg);
 		}else {
