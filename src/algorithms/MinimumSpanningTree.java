@@ -10,11 +10,12 @@ import java.util.Set;
 
 
 /**
- * My implementation of the minimum spanning tree algorithm.
+ * My implementation of the Prim's algorithm to find
+ * the minimum spanning tree.
  * @author David Perez
  *
  */
-public class SpanningTree {
+public class MinimumSpanningTree {
 	
 	/**
 	 * A class that handle my Minimum Spanning Tree.
@@ -565,7 +566,7 @@ public class SpanningTree {
 	 */
 	public static void main(String[] args) {
 
-		SpanningTree mst = new SpanningTree();
+		MinimumSpanningTree mst = new MinimumSpanningTree();
 		
 		/*
 		 * Tree class.
@@ -698,7 +699,7 @@ public class SpanningTree {
 		//using the default example from https://visualgo.net/en/mst
 		//I recommend debugging and in parallel run the interactive algorithm
 		//from the url I am referencing. That's a great way to learn.
-		SpanningTree myMST = new SpanningTree();
+		MinimumSpanningTree myMST = new MinimumSpanningTree();
 		Vertex vertex0 = myMST.new Vertex(0);
 		Vertex vertex1 = myMST.new Vertex(1);
 		Vertex vertex2 = myMST.new Vertex(2);
