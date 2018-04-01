@@ -98,13 +98,14 @@ public class MinimumSpanningTree {
 				if(vertex == null) {
 					if(other.vertex != null) {
 						return false;
-					}else if(!vertex.equals(other.vertex)) {
-						return false;
 					}
+				}else if(!vertex.equals(other.vertex)) {
+					return false;
 				}
+				
 				return true;
 			}
-			
+
 			/**
 			 * My custom string, with a notation useful for debugging.
 			 */
@@ -114,7 +115,7 @@ public class MinimumSpanningTree {
 				sb.append("{").append(this.vertex).append(", ").append(this.edge).append("}");
 				return sb.toString();
 			}
-			
+
 		}
 
 		/**
