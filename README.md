@@ -1,6 +1,7 @@
 # My coding interview solutions and resources
-Solutions I implemented for typical coding interview programming questions
+Solutions I implemented for typical coding interview programming questions.
 
+Each algorithm is implemented on a single file (I didn't split the classes on separate files) so you can run each algorithm from a single file. Just copy/paste any file in your java environment (independently from each other) and run it, without external dependencies.
 
 ## Tools 
 
