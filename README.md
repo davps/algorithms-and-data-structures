@@ -12,7 +12,7 @@
 
 ## Code organization
 
-Each algorithm is implemented on a single file (I didn't split the classes on separate files) so you can run each algorithm from a single file. Just copy/paste any file in your java environment (independently from each other) and run it, without external dependencies.
+Each algorithm is implemented on a single file (I didn't split the classes on separate files) so you can run each algorithm from a single file, which make it easy to run it on [CoderPad](https://coderpad.io), for example, or by just copy/pasting any file in your java environment (independently from each other) without any external dependency.
 
 ## Tools 
 
@@ -48,7 +48,7 @@ https://www.cs.usfca.edu/~galles/visualization/Heap.html
  - The algorithms are implemented using the TDD methodology (write tests first, then
    implement the code that passes the tests). TDD is suitable for this case because
    the requirements are well known.
- - Everything is on this single file (no make it easy to reproduce in codepad, for example)
+ - Everything is on this single file (to make it easy to reproduce in codepad, for example)
  - I use an online graph renderer called [digraph dot (graphviz)](http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html) to represent the graph.
 	 
 	
