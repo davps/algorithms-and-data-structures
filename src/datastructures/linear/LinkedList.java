@@ -1,26 +1,50 @@
 package datastructures.linear;
 
+/**
+ * My linked list implementation
+ * 
+ * @author David Perez
+ *
+ * @param <T>
+ */
 public class LinkedList <T> {
+	/**
+	 * The head node of the linked list
+	 */
 	private Node first;
 	
+	/**
+	 * The linked list node
+	 * @author david
+	 *
+	 */
 	class Node{
-		Node next = null;
-		String value;
-		Node(String value){
-			this.value = value;
+		
+		/**
+		 * A reference to the next node of the linked list
+		 */
+		Node next;
+		
+		/**
+		 * The node data
+		 */
+		T data;		
+		
+		Node(final T data){
+			this.data = data;
 		}
 	}
 		
 	/**
 	 * Appends the specified element to the end of this list.
-	 * @param value
+	 * @param data
 	 */
-	public boolean add(String value) {
-		if(value == null) {
+	public boolean add(final T data) {
+		if(data == null) {
 			return false;
 		}
 		
-		Node end = new Node(value);
+		final Node end = new Node(data);
 
 		if(this.first == null) {
 			this.first = end;
@@ -36,23 +60,24 @@ public class LinkedList <T> {
 	}
 	
 	/**
-	 * Removes the first occurrence of the specified element from this list, if it is present.
-	 * @param index
+	 * Removes the first occurrence of the specified element 
+	 * from this list, if it is present.
+	 * @param data
 	 * @return
 	 */
-	private boolean remove(String value) {
+	private boolean remove(final String data) {
 		if(this.first == null) {
 			return false;
 		}
 		
-		if(this.first.value.equals(value)) {
+		if(this.first.data.equals(data)) {
 			this.first = this.first.next;
 			return true;
 		}
 		
 		Node node = this.first;
 		while(node.next != null) {
-			if(node.next.value.equals(value)) {
+			if(node.next.data.equals(data)) {
 				node.next = node.next.next;
 				return true;
 			}
@@ -66,12 +91,12 @@ public class LinkedList <T> {
 	 * Retrieves, but does not remove, the head (first element) of this list.
 	 * @return
 	 */
-	private String peek() {
+	private T peek() {
 		if(this.first == null) {
 			return null;
 		}
 
-		return this.first.value;
+		return this.first.data;
 	}
 
 	/**
@@ -97,30 +122,34 @@ public class LinkedList <T> {
 		return counter;
 	}
 
-	private static void expectTrue(boolean condition, String message) {
-		if(condition) {
-			System.out.println("Success: " + message);
-		}else {
-			System.err.println("Error: " + message);
-		}
+	/**
+	 * Returns true if this linked list contains no elements.
+	 * @return
+	 */
+	public boolean isEmpty() {
+		return this.size() == 0;
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * Main class. Used for testing.
+	 * @param args
+	 */
+	public static void main(final String[] args) {
 		
 		/**
-		 * Aceptance tests
+		 * Tests
 		 */
-		LinkedList<String> list = new LinkedList<String>();
+		final LinkedList<String> list = new LinkedList<String>();
 		
-		expectTrue(list.size() == 0, "List is empty");
+		expectTrue(list.isEmpty(), "List is empty");
 
-		String hi = "Hello, world!";
+		final String hi = "Hello, world!";
 		list.add(hi);
 		
 		expectEqual(list.peek(), hi, "Root to be " + hi);
 		expectEqual(list.size(), 1, "and size 1");
 		
-		String item = "one more item";
+		final String item = "one more item";
 		list.add(item);
 		list.add("test 3");
 		expectTrue(list.size() == 3, "List have 3 items");
@@ -131,8 +160,29 @@ public class LinkedList <T> {
 		expectEqual(list.size(), 1, "and now size is 1");
 		
 	}
+	
+	/**
+	 * Testing helper
+	 * 
+	 * @param condition
+	 * @param message
+	 */
+	private static void expectTrue(final boolean condition, final String message) {
+		if(condition) {
+			System.out.println("Success: " + message);
+		}else {
+			System.err.println("Error: " + message);
+		}
+	}
 
-	private static void expectEqual(int expected, int toBe, String msg) {
+	/**
+	 * Testing helper
+	 * 
+	 * @param expected
+	 * @param toBe
+	 * @param msg
+	 */
+	private static void expectEqual(final int expected, final int toBe, final String msg) {
 		if(expected == toBe) {
 			System.out.println("Success:" + msg);
 		}else {
@@ -141,7 +191,14 @@ public class LinkedList <T> {
 		}		
 	}
 
-	private static void expectEqual(String expected, String toBe, String msg) {
+	/**
+	 * Testing helper
+	 * 
+	 * @param expected
+	 * @param toBe
+	 * @param msg
+	 */
+	private static void expectEqual(final String expected, final String toBe, final String msg) {
 		if(expected.equals(toBe)) {
 			System.out.println("Success:" + msg);
 		}else {
