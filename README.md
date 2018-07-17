@@ -18,9 +18,9 @@ Each algorithm is implemented on a single file (I didn't split the classes on se
 
 ### Drawing a graph on the browser
 
-[This is a specialized tool](http://www.samsarin.com/project/dagre-d3/latest/demo/interactive-demo.html) for graph drawing 
-	
-You can do, for example:
+[GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/) is a tool for graph drawing. There are many tools like this online, all based on Graphviz.
+
+You can draw a tree, for example:
 
 ```
 digraph {
@@ -30,7 +30,38 @@ digraph {
  }
 ```
 which outputs this image:
+
 ![Demo Digraph](./assets/graph1.png?raw=true)
+
+Also, a linked list:
+
+```
+digraph {
+    node [shape=record];
+    node0[label="<data> 12 | <pointer> next"]
+    node2[label="<data>  1 | <pointer> next"]
+    node0:pointer -> node2:data
+}
+```
+![Demo Digraph 2](./assets/graph2.png?raw=true)
+
+you can even draw a fancier version like this:
+
+```
+digraph g {
+    rankdir=LR;
+    node [shape=record];
+    a [label="{ <data> 12 | <pointer>  }", width=1.2]
+    b [label="{ <data> 1 | <pointer>  }"];
+    c [label="{ <data> 7 | <pointer>  }"];
+    d [shape=box];
+    a:pointer:c -> b:data [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false, arrowsize=1.2];
+    b:pointer:c -> c:data [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false];
+    c:pointer:c -> d      [arrowhead=vee, arrowtail=dot, dir=both, tailclip=false];
+}
+
+```
+![Demo Digraph 3](./assets/graph2.png?raw=true)
 
 
 [Draw.io](https://www.draw.io/) is more manual but useful in some cases
