@@ -10,6 +10,9 @@
 
 - [(Max) Heap](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/tree/MaxHeap.java)
 
+- [Linked List](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/linear/LinkedList.java)
+
+
 ## Code organization
 
 Each algorithm is implemented on a single file (I didn't split the classes on separate files) so you can run each algorithm from a single file, which make it easy to run it on [CoderPad](https://coderpad.io), for example, or by just copy/pasting any file in your java environment (independently from each other) without any external dependency.
