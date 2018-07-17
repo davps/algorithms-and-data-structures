@@ -20,7 +20,7 @@ Each algorithm is implemented on a single file (I didn't split the classes on se
 
 [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/) is a tool for graph drawing. There are many tools like this online, all based on Graphviz.
 
-You can draw a tree, for example:
+You can specify a tree like this:
 
 ```
 digraph {
@@ -45,7 +45,8 @@ digraph {
 ```
 ![Demo Digraph 2](./assets/graph2.png?raw=true)
 
-you can even draw a fancier version like this:
+
+and you can even draw a fancier version, like this:
 
 ```
 digraph g {
@@ -61,10 +62,10 @@ digraph g {
 }
 
 ```
-![Demo Digraph 3](./assets/graph2.png?raw=true)
+![Demo Digraph 3](./assets/graph3.png?raw=true)
 
 
-[Draw.io](https://www.draw.io/) is more manual but useful in some cases
+[Draw.io](https://www.draw.io/) is more manual, for general purpose drawing, but could be useful in some cases.
 
 
 ### Interactive construction of data structures
