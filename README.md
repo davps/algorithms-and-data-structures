@@ -29,6 +29,9 @@ digraph {
     B -> D;
  }
 ```
+which outputs this image:
+![Demo Digraph](./assets/graph1.png?raw=true)
+
 
 [Draw.io](https://www.draw.io/) is more manual but useful in some cases
 
