@@ -1,12 +1,36 @@
 package datastructures.linear;
 
 public class Queue <T> {
-	
+	private boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private void queue(T data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private T dequeue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private static void expectTrue(boolean expect, String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+		
 	public static void main(String[] args) {
 		Queue<String> queue = new Queue<String>();
 		
 		expectTrue(queue.size() == 0, "size() returns 0 when the queue is empty");
-		expect(queue.dequeue() == null, "return null when queue is empty");
+		expectTrue(queue.dequeue() == null, "return null when queue is empty");
 		
 		String item1 = "item1";
 		String item2 = "item2";
@@ -21,5 +45,6 @@ public class Queue <T> {
 		expectTrue(queue.isEmpty(), "queue is empty");
 		
 	}
-	
+
+
 }
