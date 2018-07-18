@@ -12,6 +12,10 @@
 
 - [Linked List](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/linear/LinkedList.java)
 
+- [Stack](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/linear/Stack.java)
+
+- [Queue](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/linear/Queue.java)
+
 
 ## Code organization
 
