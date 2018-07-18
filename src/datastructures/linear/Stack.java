@@ -70,11 +70,6 @@ public class Stack <T> {
 		
 		final StackNode<T> node = new StackNode<T>(data);
 		
-		if(this.top == null) {
-			this.top = node;
-			return true;
-		}
-		
 		node.next = this.top;
 		this.top = node;
 		return true;
