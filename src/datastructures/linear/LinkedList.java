@@ -11,26 +11,26 @@ public class LinkedList <T> {
 	/**
 	 * The head node of the linked list
 	 */
-	private Node first;
+	private LinkedListNode first;
 	
 	/**
 	 * The linked list node
 	 * @author david
 	 *
 	 */
-	class Node{
+	class LinkedListNode{
 		
 		/**
 		 * A reference to the next node of the linked list
 		 */
-		Node next;
+		LinkedListNode next;
 		
 		/**
 		 * The node data
 		 */
 		T data;		
 		
-		Node(final T data){
+		LinkedListNode(final T data){
 			this.data = data;
 		}
 	}
@@ -44,14 +44,14 @@ public class LinkedList <T> {
 			return false;
 		}
 		
-		final Node end = new Node(data);
+		final LinkedListNode end = new LinkedListNode(data);
 
 		if(this.first == null) {
 			this.first = end;
 			return true;
 		}
 		
-		Node node = this.first;
+		LinkedListNode node = this.first;
 		while(node.next != null) {
 			node = node.next;
 		}
@@ -75,7 +75,7 @@ public class LinkedList <T> {
 			return true;
 		}
 		
-		Node node = this.first;
+		LinkedListNode node = this.first;
 		while(node.next != null) {
 			if(node.next.data.equals(data)) {
 				node.next = node.next.next;
@@ -111,7 +111,7 @@ public class LinkedList <T> {
 		}
 		
 
-		Node node = this.first;
+		LinkedListNode node = this.first;
 		counter++;
 
 		while(node.next != null) {
@@ -143,6 +143,10 @@ public class LinkedList <T> {
 		
 		expectTrue(list.isEmpty(), "List is empty");
 
+		expectTrue(!list.remove("a random item"), "Try to remove an item when the list is empty");
+		expectTrue(list.peek() == null, "Returns null from peek() when list is empty");
+		expectTrue(!list.add(null), "Expect failure of null additions");
+		
 		final String hi = "Hello, world!";
 		list.add(hi);
 		
@@ -158,6 +162,15 @@ public class LinkedList <T> {
 		
 		expectTrue(list.remove(list.peek()), "remove another item");
 		expectEqual(list.size(), 1, "and now size is 1");
+		
+		list.add("new item");
+		list.add(item);
+		list.remove(item);
+		expectEqual(list.size(), 2, "removal of non-first item");
+		
+		expectTrue(!list.isEmpty(), "List is not empty");
+		
+		expectTrue(!list.remove("random item"), "Try to remove an item that did not exist");
 		
 	}
 	
