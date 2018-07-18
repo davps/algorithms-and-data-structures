@@ -35,6 +35,7 @@ public class Stack <T> {
 		
 		if(this.top == null) {
 			this.top = node;
+			return true;
 		}
 		
 		node.next = this.top;
@@ -73,6 +74,9 @@ public class Stack <T> {
 	public static void main(String[] args) {
 		Stack<String> stack = new Stack<String>();
 		
+		assertTrue(stack.size() == 0, "start with size=0");
+		assertTrue(!stack.add(null), "Did not acept null additions");
+		
 		assertTrue(stack.peek() == null, 
 			"peek() return null when trying to retrieve the top of the queue but the queue is empty");
 
@@ -81,9 +85,11 @@ public class Stack <T> {
 				
 		String first = "first";
 		assertTrue(stack.add(first), "add() to stack");
+		assertTrue(stack.size() == 1, "now size is 1");
 		stack.add("second");
 		String hi = "third, hi";
 		stack.add(hi);
+		assertTrue(stack.size() == 3, "now size is 3");
 
 		assertTrue(!stack.isEmpty(), "isEmpty() returns false when stack is not empty");		
 		assertTrue(!stack.remove(null) && stack.size() == 3, "remove() returns false when trying to remove null from an stack");
