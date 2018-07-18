@@ -1,25 +1,69 @@
 package datastructures.linear;
 
 public class Stack <T> {
+	private static class StackNode<T>{
+		private T data;
+		private StackNode<T> next;
+		
+		public StackNode(T data) {
+			this.data = data;
+		}
+	}
+	
+	private StackNode<T> top;
 	
 	private int size() {
-		return 0;
+		if(this.top == null) {
+			return 0;
+		}
+		
+		int i = 1;
+		StackNode<T> node = this.top;
+		while(node.next != null) {
+			i++;
+			node = node.next;
+		}
+		return i;
 	}
 
-	private boolean add(String first) {
-		return false;		
+	private boolean add(T data) {
+		if(data == null) {
+			return false;
+		}
+		
+		StackNode<T> node = new StackNode<T>(data);
+		
+		if(this.top == null) {
+			this.top = node;
+		}
+		
+		node.next = this.top;
+		this.top = node;
+		return true;
 	}
 
-	private boolean remove(String string) {
-		return false;
+	private boolean remove(T data) {
+		if(data == null) {
+			return false;
+		}
+		
+		if(this.top == null) {
+			return false;
+		}
+		
+		this.top = this.top.next;
+		return true;
 	}
 
 	private boolean isEmpty() {
-		return false;
+		return this.top == null;
 	}
 
 	private T peek() {
-		return null;
+		if(this.top == null) {
+			return null;
+		}
+		return this.top.data;
 	}
 
 	/**
@@ -54,7 +98,11 @@ public class Stack <T> {
 	}
 
 	private static void assertTrue(boolean expectation, String message) {
-		
+		if(expectation) {
+			System.out.println("Success: " + message);
+		}else {
+			System.err.println("Error: " + message);
+		}
 	}
 
 
