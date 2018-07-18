@@ -2,6 +2,25 @@ package datastructures.linear;
 
 public class Stack <T> {
 	
+	private int size() {
+		return 0;
+	}
+
+	private boolean add(String first) {
+		return false;		
+	}
+
+	private boolean remove(String string) {
+		return false;
+	}
+
+	private boolean isEmpty() {
+		return false;
+	}
+
+	private T peek() {
+		return null;
+	}
 
 	/**
 	 * Tests
@@ -14,9 +33,9 @@ public class Stack <T> {
 			"peek() return null when trying to retrieve the top of the queue but the queue is empty");
 
 		assertTrue(stack.isEmpty(), "isEmpty() returns true when the stack is empty");
-		assertTrue(!stack.remove("hello"), "remove() returns false when trying to remove from an empty stack")
+		assertTrue(!stack.remove("hello"), "remove() returns false when trying to remove from an empty stack");
 				
-		String first = "first"
+		String first = "first";
 		assertTrue(stack.add(first), "add() to stack");
 		stack.add("second");
 		String hi = "third, hi";
@@ -33,5 +52,10 @@ public class Stack <T> {
 		assertTrue(stack.remove(hi), "remove() the top of the stack");
 
 	}
+
+	private static void assertTrue(boolean expectation, String message) {
+		
+	}
+
 
 }
