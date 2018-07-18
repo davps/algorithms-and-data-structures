@@ -11,24 +11,24 @@ public class LinkedList <T> {
 	/**
 	 * The head node of the linked list
 	 */
-	private LinkedListNode first;
+	private LinkedListNode<T> first;
 	
 	/**
 	 * The linked list node
 	 * @author david
 	 *
 	 */
-	class LinkedListNode{
+	private static class LinkedListNode<T>{
 		
 		/**
 		 * A reference to the next node of the linked list
 		 */
-		LinkedListNode next;
+		private LinkedListNode<T> next;
 		
 		/**
 		 * The node data
 		 */
-		T data;		
+		private T data;		
 		
 		LinkedListNode(final T data){
 			this.data = data;
@@ -44,14 +44,14 @@ public class LinkedList <T> {
 			return false;
 		}
 		
-		final LinkedListNode end = new LinkedListNode(data);
+		final LinkedListNode<T> end = new LinkedListNode<T>(data);
 
 		if(this.first == null) {
 			this.first = end;
 			return true;
 		}
 		
-		LinkedListNode node = this.first;
+		LinkedListNode<T> node = this.first;
 		while(node.next != null) {
 			node = node.next;
 		}
@@ -75,7 +75,7 @@ public class LinkedList <T> {
 			return true;
 		}
 		
-		LinkedListNode node = this.first;
+		LinkedListNode<T> node = this.first;
 		while(node.next != null) {
 			if(node.next.data.equals(data)) {
 				node.next = node.next.next;
@@ -111,7 +111,7 @@ public class LinkedList <T> {
 		}
 		
 
-		LinkedListNode node = this.first;
+		LinkedListNode<T> node = this.first;
 		counter++;
 
 		while(node.next != null) {
