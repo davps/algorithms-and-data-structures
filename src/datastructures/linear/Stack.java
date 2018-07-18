@@ -12,7 +12,11 @@ public class Stack <T> {
 	
 	private StackNode<T> top;
 	
-	private int size() {
+	/**
+	 * Returns the number of items in the stack.
+	 * @return
+	 */
+	public int size() {
 		if(this.top == null) {
 			return 0;
 		}
@@ -26,7 +30,12 @@ public class Stack <T> {
 		return i;
 	}
 
-	private boolean add(T data) {
+	/**
+	 * Pushes an item onto the top of this stack. 
+	 * @param data
+	 * @return
+	 */
+	public boolean push(T data) {
 		if(data == null) {
 			return false;
 		}
@@ -43,24 +52,37 @@ public class Stack <T> {
 		return true;
 	}
 
-	private boolean remove(T data) {
-		if(data == null) {
-			return false;
-		}
-		
+	/**
+	 * Removes the object at the top of this stack and returns 
+	 * that object as the value of this function.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public T pop() {
 		if(this.top == null) {
-			return false;
+			return null;
 		}
 		
+		T item = this.top.data;
 		this.top = this.top.next;
-		return true;
+		return item;
 	}
 
-	private boolean isEmpty() {
+	/**
+	 * Tests if this stack is empty.
+	 * @return
+	 */
+	public boolean isEmpty() {
 		return this.top == null;
 	}
 
-	private T peek() {
+	/**
+	 * Looks at the object at the top of this stack without 
+	 * removing it from the stack.
+	 * @return
+	 */
+	public T peek() {
 		if(this.top == null) {
 			return null;
 		}
@@ -75,31 +97,31 @@ public class Stack <T> {
 		Stack<String> stack = new Stack<String>();
 		
 		assertTrue(stack.size() == 0, "start with size=0");
-		assertTrue(!stack.add(null), "Did not acept null additions");
+		assertTrue(!stack.push(null), "Did not acept null additions");
 		
 		assertTrue(stack.peek() == null, 
 			"peek() return null when trying to retrieve the top of the queue but the queue is empty");
 
 		assertTrue(stack.isEmpty(), "isEmpty() returns true when the stack is empty");
-		assertTrue(!stack.remove("hello"), "remove() returns false when trying to remove from an empty stack");
+		assertTrue(!(stack.pop() == null), "pop() returns null when trying to remove from an empty stack");
 				
 		String first = "first";
-		assertTrue(stack.add(first), "add() to stack");
+		assertTrue(stack.push(first), "add() to stack");
 		assertTrue(stack.size() == 1, "now size is 1");
-		stack.add("second");
+		String second = "second";
+		stack.push(second);
 		String hi = "third, hi";
-		stack.add(hi);
+		stack.push(hi);
 		assertTrue(stack.size() == 3, "now size is 3");
 
 		assertTrue(!stack.isEmpty(), "isEmpty() returns false when stack is not empty");		
-		assertTrue(!stack.remove(null) && stack.size() == 3, "remove() returns false when trying to remove null from an stack");
 		
 		
 		assertTrue(stack.peek().equals(hi), 
 				"peek() return "+hi+" when trying to retrieve the top of the queue");
 		
-		assertTrue(stack.remove(first), "remove() the bottom of the stack");
-		assertTrue(stack.remove(hi), "remove() the top of the stack");
+		assertTrue(stack.pop().equals(hi), "pop() the top of the stack");
+		assertTrue(stack.pop().equals(second), "pop() the top of the stack");
 
 	}
 
