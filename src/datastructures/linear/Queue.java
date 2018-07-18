@@ -28,7 +28,7 @@ public class Queue <T> {
 		/**
 		 * The data handled by the node
 		 */
-		private T data;
+		final private T data;
 		
 		/**
 		 * A reference to the next node
@@ -62,7 +62,7 @@ public class Queue <T> {
 			return false;
 		}
 		
-		QueueNode<T> node = new QueueNode<T>(data);
+		final QueueNode<T> node = new QueueNode<T>(data);
 		
 		if(this.first == null) {
 			this.first = node;
@@ -84,7 +84,7 @@ public class Queue <T> {
 			return null;
 		}
 		
-		T item = this.first.data;
+		final T item = this.first.data;
 		this.first = this.first.next;
 		
 		if(this.first == null) {
@@ -111,7 +111,11 @@ public class Queue <T> {
 		
 		return i;
 	}
-		
+	
+	/**
+	 * Run the tests
+	 * @param args
+	 */
 	public static void main(final String[] args) {
 		final Queue<String> queue = new Queue<String>();
 		
