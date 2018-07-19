@@ -1,6 +1,6 @@
 # Algorithms and data structures in java
 
-- [Minimum Spanning Tree](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/algorithms/SpanningTree.java) 
+- [Minimum Spanning Tree](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/algorithms/MinimumSpanningTree.java) 
 
 - [Breadth-first search](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/graph/BFS.java)
 
