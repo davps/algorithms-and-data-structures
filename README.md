@@ -16,6 +16,15 @@
 
 - [Queue](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/linear/Queue.java)
 
+- [Merge sort](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/sorting/bycomparison/Merge.java)
+
+- [Bubble sort](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/sorting/bycomparison/Bubble.java)
+
+- [Selection sort](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/sorting/bycomparison/Selection.java)
+
+- [Tree Pre-order, In-order and Post-order traversal](https://github.com/davps/algorithms-and-data-structures-in-java/blob/master/src/datastructures/tree/Traversal.java)
+
+
 
 ## Code organization
 
